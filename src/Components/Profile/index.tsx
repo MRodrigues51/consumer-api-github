@@ -1,5 +1,6 @@
 import { Container, Header, Avatar, Login, Name, Inner, Data } from "./styles"
 import { MdGroup, MdLocationCity, MdWork, MdLink } from 'react-icons/md'
+import { Filter } from "../Filter"
 
 export function Profile() {
   return (
@@ -18,6 +19,7 @@ export function Profile() {
           <a href="https://www.linkedin.com/in/marcelorodriguesdev/">LinkedIn</a>
         </Data>
       </Inner>
+      <Filter />
     </Container>
   )
 }
