@@ -1,9 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { ThemeProvider } from 'styled-components'
+import { Normalize } from 'styled-normalize'
+import { BrowserRouter } from 'react-router-dom'
+import { Router } from './Router';
+
+import { GlobalStyle } from './styles/global'
+import { defaultTheme } from './styles/themes/default'
 
 export function App() {
   return (
-    <div><>Api GIT</></div>
+    <ThemeProvider theme={defaultTheme}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <GlobalStyle />
+      <Normalize />
+    </ThemeProvider>
   )
 }
 
