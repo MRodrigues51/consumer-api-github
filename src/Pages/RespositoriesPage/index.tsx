@@ -1,5 +1,6 @@
 import { Container, Main, Sidebar } from './styles'
 import { Profile } from '../../Components/Profile'
+import { Repos } from '../../Components/Repos'
 
 export function RepositoriesPage() {
   return (
@@ -8,7 +9,7 @@ export function RepositoriesPage() {
         <Profile />
       </Sidebar>
       <Main>
-        Main
+        <Repos />
       </Main>
     </Container>
   )
