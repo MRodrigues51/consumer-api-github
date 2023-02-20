@@ -10,6 +10,5 @@ export function Repo() {
         <Link href="https://github.com/MRodrigues51/" target="_blank">VER</Link>
       </Footer>
     </Container>
-
   )
 }
