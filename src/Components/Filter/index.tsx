@@ -5,15 +5,23 @@ interface LanguagesProps {
     name: string,
     count: number,
     color: string
-  }[]
+  }[],
+  currentLanguage: string,
+  onClick: (language: string) => void,
 }
 
-export function Filter({ languages }: LanguagesProps) {
+export function Filter({ languages, currentLanguage, onClick }: LanguagesProps) {
+
+  function handleClick(language: string) {
+    onClick(language)
+  }
 
   const selectors = languages.map(({ name, count, color }) => (
     <Selector
       key={name.toLowerCase()}
       color={color}
+      className={currentLanguage === name ? 'selected' : ''}
+      onClick={() => handleClick(name)} //
     >
       <span>{name}</span>
       <span>{count}</span>
@@ -22,7 +30,7 @@ export function Filter({ languages }: LanguagesProps) {
   return (
     <Container>
       {selectors}
-      <Cleaner>Limpar</Cleaner>
-    </Container>
+      <Cleaner onClick={() => onClick && onClick('')}>Limpar</Cleaner>
+    </Container >
   )
 }
