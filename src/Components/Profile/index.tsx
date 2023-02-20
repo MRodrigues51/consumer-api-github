@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { Container, Header, Avatar, Login, Name, Inner, Data } from "./styles"
 import { MdGroup, MdLocationCity, MdWork, MdLink } from 'react-icons/md'
 

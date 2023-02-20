@@ -1,4 +1,5 @@
-export const langColors = {
+
+export const langColors: { [key: string]: string | undefined } = {
   javascript: '#f1c40f',
   typescript: '#2980b9',
   python: '#2ecc71',

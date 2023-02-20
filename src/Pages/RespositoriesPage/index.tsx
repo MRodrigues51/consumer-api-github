@@ -2,6 +2,7 @@ import { Container, Main, Sidebar } from './styles'
 import { Profile } from '../../Components/Profile'
 import { Repos } from '../../Components/Repos'
 import { Filter } from '../../Components/Filter'
+import { getLangsFrom } from '../../services/api'
 
 export function RepositoriesPage() {
   const user = {
@@ -53,21 +54,7 @@ export function RepositoriesPage() {
     },
   ]
 
-  const stats = repositories
-    .map((repositories) => repositories.language)
-    .reduce((data, language) => ({
-      ...data,
-      [language]: (data[language] || 0) + 1,
-    }), [])
-  delete stats.null
-  console.log(stats)
-
-  const languages = [
-    { name: 'JavaScript', count: 5, color: '#f1c40f' },
-    { name: 'Shell', count: 2, color: '#7f8c8d' },
-    { name: 'PHP', count: 3, color: '#3498db' },
-    { name: 'Ruby', count: 1, color: '#e74c3c' },
-  ]
+  const languages = getLangsFrom(repositories)
   return (
     <Container>
       <Sidebar>
