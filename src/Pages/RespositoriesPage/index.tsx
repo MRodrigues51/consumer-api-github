@@ -1,76 +1,81 @@
-import { useState } from 'react'
-import { Container, Main, Sidebar } from './styles'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { Loading, Container, Main, Sidebar } from './styles'
 import { Profile } from '../../Components/Profile'
 import { Repos } from '../../Components/Repos'
 import { Filter } from '../../Components/Filter'
-import { getLangsFrom } from '../../services/api'
+import { getRepos, getUser, getLangsFrom } from '../../services/api'
 
+interface User {
+  login: string;
+  avatar_url: string;
+  name: string;
+  followers: number;
+  following: number;
+  company: string | null;
+  blog: string;
+  location: string;
+}
+
+interface Languages {
+  name: string;
+  count: number;
+  color: string;
+}
 export function RepositoriesPage() {
+  const { login } = useParams();
+  const [user, setUser] = useState<User>()
+  const [repositories, setRepositories] = useState([])
+  const [languages, setLanguages] = useState<Languages[]>([])
   const [currentLanguage, setCurrentLanguage] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [userResponse, repositoriesResponse] = await Promise.all([
+          getUser(login || ''),
+          getRepos(login || '')
+        ]);
+        setUser(userResponse.data)
+        setRepositories(repositoriesResponse.data)
 
-  const user = {
-    login: "MRodrigues51",
-    avatar_url: "https://avatars.githubusercontent.com/u/38961300?v=4",
-    name: "Marcelo Rodrigues",
-    followers: 8,
-    following: 11,
-    company: null,
-    blog: "https://www.linkedin.com/in/marcelorodriguesdev/",
-    location: "Crato, CE, BR",
-  }
-  const repositories = [
-    {
-      id: "1",
-      name: "Repo 1",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "NodeJS"
-    },
-    {
-      id: "2",
-      name: "Repo 2",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "NodeJS"
-    },
-    {
-      id: "3",
-      name: "Repo 3",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "PHP"
-    },
-    {
-      id: "4",
-      name: "Repo 4",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "TypeScript"
-    },
-    {
-      id: "5",
-      name: "Repo 5",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "Java"
-    },
-    {
-      id: "6",
-      name: "Repo 6",
-      description: "Descrição",
-      html_url: "https://www.linkedin.com/in/marcelorodriguesdev/",
-      language: "Ruby"
-    },
-  ]
-  const languages = getLangsFrom(repositories)
+        setLanguages(getLangsFrom(repositoriesResponse.data))
+        // console.log(userResponse.data)
+      } catch (error) {
+        setError('Não foi possível carregar os dados do usuário.')
+        // console.log(error)
+      }
+      setLoading(false)
+    }
+    loadData()
+  }, [])
+
   const onFilter = (language: string) => {
     setCurrentLanguage(language)
+  }
+  if (loading) {
+    return <Loading>Carregando...</Loading>
+  }
+  if (error) {
+    return <div>{error}</div>
   }
   return (
     <Container>
       <Sidebar>
-        <Profile user={user} />
-        <Filter languages={languages} currentLanguage={currentLanguage} onClick={onFilter} />
+        <Profile user={user ?
+          user : {
+            login: '',
+            avatar_url: '',
+            name: '',
+            followers: 0,
+            following: 0,
+            company: null,
+            blog: '',
+            location: ''
+          }} />
+        <Filter languages={languages}
+          currentLanguage={currentLanguage} onClick={onFilter} />
       </Sidebar>
       <Main>
         <Repos repositories={repositories} currentLanguage={currentLanguage} />
@@ -78,3 +83,4 @@ export function RepositoriesPage() {
     </Container>
   )
 }
+//

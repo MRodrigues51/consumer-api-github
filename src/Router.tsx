@@ -9,7 +9,7 @@ export function Router() {
       {/* <Route path="/" element={<DefaultLayout />}> */}
 
       <Route path="/" element={<Home />} />
-      <Route path="/repositories" element={<RepositoriesPage />} />
+      <Route path="/:login/repositories" element={<RepositoriesPage />} />
       {/* </Route> */}
     </Routes>
   )

@@ -1,11 +1,17 @@
 import axios from 'axios';
 import { langColors } from './config';
 
-// const api = axios.create({
-//   baseURL: process.env.REACT_APP_API_BASE_URL,
-// });
+const api = axios.create({
+  // baseURL: process.env.REACT_APP_API_BASE_URL,
+  // baseURL: "http://localhost:3000"
+  baseURL: "https://api.github.com"
 
-// export default api;
+});
+console.log(process.env.REACT_APP_API_BASE_URL)
+export const getUser = async (login: string) => api.get(`/users/${login}`)
+export const getRepos = async (login: string) => api.get(`/users/${login}/repos`)
+
+export default api;
 
 
 export function getLangsFrom(repositories: any) {
